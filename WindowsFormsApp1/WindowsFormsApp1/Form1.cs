@@ -16,11 +16,13 @@ namespace WindowsFormsApp1
         public Form1()
         {
             InitializeComponent();
+            this.BackColor = Color.LightBlue;
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
             this.LlenarDataGridView();
+            this.llenarComboBox();
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -74,8 +76,16 @@ namespace WindowsFormsApp1
                 txtdni.Focus();
                 txtdni.BackColor = Color.Red;
                 return;
-
             }
+            if ((dni.Length!=8))
+            {
+                MessageBox.Show("la cantidad tiene que ser de 8 digitos.", "error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                txtdni.Focus();
+                txtdni.BackColor = Color.Red;
+                return;
+        }
+
+
             inquilino oinquilino = new inquilino();
             oinquilino.nombre = nombre;
             oinquilino.apellido = apellido;
@@ -185,7 +195,55 @@ namespace WindowsFormsApp1
 
         private void button1_Click_1(object sender, EventArgs e)
         {
-            // hola
+         
+        }
+
+        private void txtdni_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (!char.IsDigit(e.KeyChar) && !char.IsControl(e.KeyChar))
+            {
+                // Cancelar la entrada de cualquier carácter que no sea un dígito o una tecla de control
+                e.Handled = true;
+            }
+
+            // Verificar si la longitud actual del texto supera los 8 dígitos
+            if (txtdni.Text.Length >= 8 && !char.IsControl(e.KeyChar))
+            {
+                // Si es así, cancelar la entrada del carácter y mostrar un mensaje de error
+                e.Handled = true;
+                MessageBox.Show("Solo se permiten 8 dígitos.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+        private void llenarComboBox()
+        {
+            string connectionString = "Data Source=lphp;Initial Catalog=Alquiler;User ID=admin;Password=123456";
+
+            try
+            { 
+                string query = "SELECT Id, Nombre+' '+apellido as nombre FROM INQUILINO";
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                    SqlDataAdapter adapter = new SqlDataAdapter(query, connection);
+                    System.Data.DataTable dataTable = new System.Data.DataTable();
+                    connection.Open();
+                    adapter.Fill(dataTable);
+
+                    comboBox1.DataSource = dataTable;
+                    comboBox1.DisplayMember = "nombre"; 
+                    comboBox1.ValueMember = "id";
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Error al llenar el ComboBox: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }
+
+
+
+
+
+
+
