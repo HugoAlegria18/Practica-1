@@ -33,6 +33,17 @@ namespace WindowsFormsApp1
 
             
             MessageBox.Show(suma.ToString());*/
+            int num1 = Convert.ToInt32(txtnum1.Text);
+            int num2 = Convert.ToInt32(txtnum2.Text);
+            this.suma(num1, num2);
+        }
+        private int suma(int uno,int dos)
+        {
+            int suma = uno + dos;
+
+            return suma;
+
+            
         }
 
         private void label1_Click(object sender, EventArgs e)
@@ -195,7 +206,11 @@ namespace WindowsFormsApp1
 
         private void button1_Click_1(object sender, EventArgs e)
         {
-         
+            int num1 = Convert.ToInt32(txtnum1.Text);
+            int num2 = Convert.ToInt32(txtnum2.Text);
+            
+            int suma = this.suma(num1, num2);
+            MessageBox.Show(suma.ToString());
         }
 
         private void txtdni_KeyPress(object sender, KeyPressEventArgs e)
@@ -237,6 +252,11 @@ namespace WindowsFormsApp1
             {
                 MessageBox.Show("Error al llenar el ComboBox: " + ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
